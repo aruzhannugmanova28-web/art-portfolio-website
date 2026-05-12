@@ -1,0 +1,23 @@
+/* COLOR PALETTE & GLOBAL TOKENS */
+;root {
+    --cream:  #fbf3e4;
+    --cream-deep: #f5e8c9;
+    --cream-warm:  #f0dfb6;
+    --gold: #e8c87c;
+    --gold-deep: #d4a85a;
+    --gold-bright: #f4d57e;
+    --gold-glow: #fff3a8;
+    --ink: #2e2415;
+    --ink-soft: #5a4a35;
+    --ink-muted: #8a7a5e;
+    --line: #e6d4a8;
+    --rose: #d8a899;
+}
+
+* {margin: 0; padding: 0; box-sizing: border-box;}
+
+html, body{
+    background: var(--cream);
+    color: var(--ink);
+
+}
