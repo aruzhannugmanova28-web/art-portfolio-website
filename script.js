@@ -113,9 +113,9 @@ function startIntro() {
     makeStars();
     //each element has its own animation-delay in the CSS so we can triger them all together here
     setTimeout(() => document.getElementById('shooting-star').classList.add('go'), 50);
-    setTimeout(() => document.getElementById('shooting-star').classList.add('show'), 50);
-    setTimeout(() => document.getElementById('shooting-star').classList.add('show'), 50);
-    setTimeout(() => document.getElementById('shooting-star').classList.add('show'), 50);
+    setTimeout(() => document.getElementById('signature-wrap').classList.add('show'), 50);
+    setTimeout(() => document.getElementById('tagline').classList.add('show'), 50);
+    setTimeout(() => document.getElementById('enter-btn').classList.add('show'), 50);
 }
 
 function endIntro() {
@@ -134,23 +134,29 @@ function renderGallery(filter = 'all') {
         ? works 
         : works.filter(w => w.category === filter);
         
-    grid.innerHTML = filtered.map( w=>
-    <article class="work data-cat="${w.category}>
-    <div class="frame">
+  grid.innerHTML = filtered.map(w => `
+    <article class="work" data-cat="${w.category}">
+      <div class="frame">
         <span class="placeholder">${w.title}</span>
-    </div>
-).join('');
+      </div>
+      <div class="meta-line">
+        <span class="title">${w.title}</span>
+        <span class="year">${w.year}</span>
+      </div>
+      <div class="medium">${w.medium}</div>
+      ${w.badge ? `<span class="badge ${w.gold ? 'gold' : ''}">${w.badge}</span>` : ''}
+    </article>
+  `).join('');
 
-    document.getElementById('count').textContent = 
+    document.getElementById('count').textContent =
     `${filtered.length} work${filtered.length === 1 ? '' : 's'}`;
+}
 
 document.getElementById('filters').addEventListener('click', e => {
     if (!e.target.classList.contains('filter')) return;
-    
-}
-    </article>)
-    
-}
+    document.querySelectorAll('.filter')
+
+});
 
 
 /*INIT */
