@@ -154,8 +154,9 @@ function renderGallery(filter = 'all') {
 
 document.getElementById('filters').addEventListener('click', e => {
     if (!e.target.classList.contains('filter')) return;
-    document.querySelectorAll('.filter')
-
+    document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
+    e.target.classList.add('active');
+    renferGallery(e.target.dataset.f);
 });
 
 
