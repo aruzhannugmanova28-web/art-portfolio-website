@@ -8,41 +8,71 @@
         <!---- google fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;500;600&family=Allura&display=swap" rel="'stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;500;600&family=Allura&display=swap" rel="stylesheet">
 
         <!---- style stylesheet -->
         <link rel="stylesheet" href="style.css">
     </head>
     <body class="intro-active">
 
+
+
         <!---- INTRO PAGE -->
+      <div id="intro">
         <div class="stars-bg" id="starsBg"></div>
 
-        <svg id="shooting-star" viewVox="0 0 100 100">
-            <defs>
-                <linearGradient id="trail-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#fff3a8" stop-opacity="0" />
-                    <stop offset="40%" stop-color="#f4d57e" stop-opacity="0.6" />
-                    <stop offset="100%" stop-color="#fff3a8" stop-opacity="1" />
-                </linearGradient>
-            </defs>
-            <path class="trail" d="M 5 12 Q 30 30, 60 52" />
-            <circle class="spark" cx="20" cy="20" r="1.6" />
-            <circle class="spark" cx="35" cy="32" r="1.2" />
-            <circle class="spark" cx="48" cy="42" r="1" />
-            <circle class="spark" cx="65" cy="57" r="14" />
-            <circle class="spark" cx="65" cy="57" r="6" />
-        </svg>
+  <div id="signature-stage">
 
-        <div id="signature-wrap">
-            <svg id="signature" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet">
-                <!--A's left leg-->
-                <path class="stroke draw" style="--len: 380; animation-delay: 2.9s;"
-                d="M 95 285 C 105 240, 130"></path>
+    <!-- Meteor falls from upper-right -->
+    <div class="meteor"></div>
 
-            </svg>
+    <!-- Sparkles that fly out when meteor lands -->
+    <div class="burst" style="left: 18%; top: 53%; --dx:  40px; --dy: -25px;"></div>
+    <div class="burst" style="left: 18%; top: 53%; --dx: -35px; --dy: -30px;"></div>
+    <div class="burst" style="left: 18%; top: 53%; --dx: -30px; --dy:  35px;"></div>
+    <div class="burst" style="left: 18%; top: 53%; --dx:  45px; --dy:  25px;"></div>
+    <div class="burst" style="left: 18%; top: 53%; --dx:   5px; --dy: -45px;"></div>
+    <div class="burst" style="left: 18%; top: 53%; --dx: -10px; --dy:  45px;"></div>
+
+    <!-- 5-line pentagram + swoosh -->
+    <svg id="signature" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet">
+
+      <!-- Star drawn as continuous pentagram (5 crossing lines).
+           Drawing order matches your reference:
+             1. left leg of "A" peak (lower-left → top)
+             2. right leg of "A" peak (top → lower-right)
+             3-5. rest of star
+             6. swoosh extending right -->
+
+      <!-- Line 1: P4(87,268) → P1(150,55)  left A leg going UP -->
+      <line class="stroke" x1="87" y1="268" x2="150" y2="55"
+            pathLength="100" style="--delay: 1.3s; --dur: 0.45s;" />
+
+      <!-- Line 2: P1(150,55) → P3(213,268)  right A leg going DOWN -->
+      <line class="stroke" x1="150" y1="55" x2="213" y2="268"
+            pathLength="100" style="--delay: 1.75s; --dur: 0.45s;" />
+
+      <!-- Line 3: P3(213,268) → P5(45,138)  diagonal across -->
+      <line class="stroke" x1="213" y1="268" x2="45" y2="138"
+            pathLength="100" style="--delay: 2.2s; --dur: 0.45s;" />
+
+      <!-- Line 4: P5(45,138) → P2(255,138)  horizontal across -->
+      <line class="stroke" x1="45" y1="138" x2="255" y2="138"
+            pathLength="100" style="--delay: 2.6s; --dur: 0.4s;" />
+
+      <!-- Line 5: P2(255,138) → P4(87,268)  closing diagonal -->
+      <line class="stroke" x1="255" y1="138" x2="87" y2="268"
+            pathLength="100" style="--delay: 2.95s; --dur: 0.45s;" />
+
+      <!-- "ruzhan" cursive sitting right next to the star -->
+      <text class="ruzhan-text" x="275" y="180" text-anchor="start">ruzhan</text>
+    </svg>
+  </div>
+            <p class="intro-tagline" id="tagline">artist · maker · central asian student</p>
+    <button id="enter-btn">enter the gallery</button>
+    <button class="skip" id="skipBtn">skip intro →</button>
         </div>
-
+</div>
         <!---- MAIN PAGE -->        
         <div id="main">
 
@@ -61,7 +91,7 @@
                 <h1>Aruzhan Nugmanova</h1>
                 <div class="star-divider">
                     <span class="line"></span>
-                    <svg viewBox="0 0 20 20"><path d="M10 1 L12.4 7.6 L19.5 8 L13.8 12.2 L15.8 19 L10 15 L4.2 19 L6.2 12.2 L0.5 8 L7.6 7.6 Z"></svg>
+                    <svg viewBox="0 0 20 20"><path d="M10 1 L12.4 7.6 L19.5 8 L13.8 12.2 L15.8 19 L10 15 L4.2 19 L6.2 12.2 L0.5 8 L7.6 7.6 Z"/></svg>
                     <span class="line"></span>
                 </div>
                 <p class="sub">a small archive of things I've made</p>
@@ -78,7 +108,7 @@
                 <button class="filter active" data-f="all">all</button>
                 <button class="filter" data-f="painting">paintings</button>
                 <button class="filter" data-f="sculpture">sculpture</button>
-                <button class="filter" data-f="digital">digital</button>
+                <button class="filter" data-f="3d">3d &amp; digital</button>
                 <button class="filter" data-f="design">design</button>
             </div>
 
@@ -87,9 +117,9 @@
 
             <section class="section" id="about">
                 <h2>about</h2>
-                <p class="lead"></p>
-                <p></p>
-                <p></p>
+                <p class="lead">A Central Asian girl from Kazakhstan, currently making things at Milton Academy.</p>
+                <p>I work across paintings, ceramics, 3D modeling, and digital illustration. My work returns again and again to the same questions: what does it mean to belong to two places at once? How do you carry a culture across an ocean? What survives translation, and what can only be made new?</p>
+                <p>Many of my pieces draw from Kazakh visual heritage, the shanyrak, the ornaments, the steppe, and place it in conversation with the worlds I'm finding here. The star you saw at the start of this site appears throughout my work. I keep coming back to it.</p>
             </section>
 
             <section class="section" id="cv">
@@ -103,7 +133,6 @@
                         <li><span class="desc">Indigo Art School</span><span class="yr">2021-2024</span></li>
                         <li><span class="desc">National School of Physics and Math(NSPM)</span><span class="yr">2016-2024</span></li>
                     </ul>
-                    </ul>
                 </div>
 
                 <div class="cv-block">
@@ -113,11 +142,60 @@
                             <span class="desc"><span class="highlight">American Visions Nominee</span> for <em>My Heritage</em>, one of five works selected across all media in the Massachusetts region · Scholastic Art &amp; Writing Awards</span>
                             <span class="yr">2026</span>
                         </li>
+            <li>
+            <span class="desc">Scholastic Art &amp; Writing Awards, Massachusetts region · 3 Gold Keys, 3 Silver Keys, 2 Honorable Mentions</span>
+            <span class="yr">2026</span>
+          </li>
+          <li>
+            <span class="desc">Scholastic Art &amp; Writing Awards · 2 Silver Keys, 3 Honorable Mentions</span>
+            <span class="yr">2025</span>
+          </li>
+          <li>
+            <span class="desc">Claire Skinner Memorial Design Competition · Winner for <em>Light the Way Ahead</em></span>
+            <span class="yr">2024</span>
+          </li>
+          <li>
+            <span class="desc">National Art Museum of Kazakhstan, Astana · Participant</span>
+            <span class="yr">2024</span>
+          </li>
+          <li>
+            <span class="desc">Higher Art Gallery · Participant for <em>Catch the Star</em></span>
+            <span class="yr">2024</span>
+          </li>
                     </ul>
-                </div>
-            </section>
-
         </div>
+
+        <div class="cv-block">
+        <h3>Skills &amp; Media</h3>
+        <p style="margin: 0;">Acrylic and oil painting · Watercolor · Ceramics and sculpture · Jewelry · 3D modeling in Blender · Adobe Illustrator · Adobe Photoshop · Architectural model-making</p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <h2>contact</h2>
+      <p class="lead">For inquiries, collaborations, or just to say hello.</p>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="label">email</div>
+          <a href="mailto:aruzhan.nugmanova16@gmail.com">aruzhan.nugmanova16@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <div class="label">instagram</div>
+          <a href="https://instagram.com/aruzhanini" target="_blank" rel="noopener">@aruzhanini</a>
+        </div>
+        <div class="contact-item">
+          <div class="label">based in</div>
+          <a href="#">Milton, MA · Astana, KZ</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="star">✦</span> made with care, 2026 <span class="star">✦</span>
+    </footer>
+  </div>
+
 
         <!--Script.js for animation-->
         <script src="script.js"></script>

@@ -6,6 +6,7 @@ const works = [
         category: "painting",
         badge: "Gold Key · American Visions Nominee",
         gold: true,
+        image: "images/My Heritage.png"
     },
     {
         title: "The Time We Met",
@@ -13,6 +14,7 @@ const works = [
         medium: "Ceramics, rope, wire, branches",
         category: "sculpture",
         badge: "Honorable Mention, Scholastic",
+        image: "images/The Time We Met.png"
     },
     {
         title: "Stars and Bones",
@@ -20,6 +22,7 @@ const works = [
         medium: "Ceramics, wire",
         category: "sculpture",
         badge: "Honorable Mention, Scholastic",
+        image: "images/Stars and Bones.png"
     },
     {
         title: "I flourish",
@@ -27,6 +30,7 @@ const works = [
         medium: "Oil on woodboard, watercolor on paper",
         category: "painting",
         badge: "Silver Key, Scholastic",
+        image: "images/i flourish.png"
     },
     {
         title: "Catch the Star",
@@ -34,30 +38,35 @@ const works = [
         medium: "Acrylic on canvas",
         category: "painting",
         badge: "High Art Gallery participant · sold",
+        image: "images/Catch the Star.png"
     },
     {
         title: "Uide(At Home trans. from kazakh)",
         year: "2025", 
         medium: "Digital art in Photoshop",
         category: "painting",
+        image: "images/Uide.png"
     },
     {
         title: "Umai Ana",
         year: "2025", 
         medium: "Acrylic on canvas",
         category: "painting",
+        image: "images/Umai Ana.png"
     },
     {
         title: "Hometown Sunsets",
         year: "2025", 
         medium: "Watercolor on paper",
         category: "painting",
+        image: "images/Hometown Sunsets.png"
     },
     {
         title: "Kazakh Earrings",
         year: "2024", 
         medium: "3D model in Blender",
         category: "3d",
+        image: "images/Kazakh Earrings.png"
     },
     {
         title: "Light the Way Ahead",
@@ -65,6 +74,7 @@ const works = [
         medium: "3D model in Blender",
         category: "3d",
         badge: "Claire Skinner Memorial Winner",
+        image: "images/Light the Way Ahead.png"
     },
     {
         title: "Cups and Mugs",
@@ -72,12 +82,14 @@ const works = [
         medium: "Pottery, ceramics",
         category: "sculpture",
         badge: "Silver Key, Scholastic",
+        image: "images/Cups and Mugs.png"
     },
     {
         title: "Signature",
         year: "2024", 
         medium: "Digital illustration in Adobe Illustrator",
         category: "design",
+        image: "images/Signature.png",
     },
 ]
 /*BACKGROUND STARS*/
@@ -88,13 +100,13 @@ function makeStars() {
     const N = 55; //how many stars to scatter
 
     for (let i = 0; i < N; i++) {
-        const svg = document.createElementNS("http://www.w3.org/2000/sv", "svg");
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("viewBox", "0 0 20 20");
         svg.classList.add("bg-star");
         if (Math.random() > 0.7) svg.classList.add("bright");
 
-        const path = document.createElementNS("http://www.w3.org/2000/sv", "path");
-        path.setAtttribute("d", Math.random() > 0.5 ? STAR_PATH : SPARKLE_PATH);
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", Math.random() > 0.5 ? STAR_PATH : SPARKLE_PATH);
         svg.appendChild(path);
 
         const size = 8 + Math.random() * 26; 
@@ -109,14 +121,6 @@ function makeStars() {
 }
 
 /*INTRO */
-function startIntro() {
-    makeStars();
-    //each element has its own animation-delay in the CSS so we can triger them all together here
-    setTimeout(() => document.getElementById('shooting-star').classList.add('go'), 50);
-    setTimeout(() => document.getElementById('signature-wrap').classList.add('show'), 50);
-    setTimeout(() => document.getElementById('tagline').classList.add('show'), 50);
-    setTimeout(() => document.getElementById('enter-btn').classList.add('show'), 50);
-}
 
 function endIntro() {
     document.body.classList.remove('intro-active');
@@ -124,8 +128,6 @@ function endIntro() {
     document.getElementById('main').classList.add('show');
 }
 
-document.getElementById('enter-btn').addEventListener('click', endIntro);
-document.getElementById('skipBtn').addEventListener('click', endIntro);
 
 /*GALLERY */
 function renderGallery(filter = 'all') {
@@ -136,8 +138,10 @@ function renderGallery(filter = 'all') {
         
   grid.innerHTML = filtered.map(w => `
     <article class="work" data-cat="${w.category}">
-      <div class="frame">
-        <span class="placeholder">${w.title}</span>
+     <div class="frame">
+        ${w.image 
+          ? `<img src="${w.image}" alt="${w.title}">` 
+          : `<span class="placeholder">${w.title}</span>`}
       </div>
       <div class="meta-line">
         <span class="title">${w.title}</span>
@@ -152,15 +156,18 @@ function renderGallery(filter = 'all') {
     `${filtered.length} work${filtered.length === 1 ? '' : 's'}`;
 }
 
+
+document.getElementById('enter-btn').addEventListener('click', endIntro);
+document.getElementById('skipBtn').addEventListener('click', endIntro);
+
 document.getElementById('filters').addEventListener('click', e => {
     if (!e.target.classList.contains('filter')) return;
     document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
     e.target.classList.add('active');
-    renferGallery(e.target.dataset.f);
+    renderGallery(e.target.dataset.f);
 });
 
 
 /*INIT */
-startIntro();
 renderGallery();
 
