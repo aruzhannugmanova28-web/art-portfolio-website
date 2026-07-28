@@ -80,20 +80,26 @@
       </ul>
     </nav>
 
-    <!-- HERO with portrait photo -->
+    <!-- HERO with brush-reveal portrait background -->
     <section class="hero" id="top">
-      <div class="hero-portrait">
-        <img src="images/opening_photo_of_me.jpg" alt="Aruzhan Nugmanova">
+      <!-- Full-screen portrait behind everything, revealed by cursor -->
+      <div class="hero-reveal-wrap">
+        <img class="hero-reveal-img" src="images/opening_photo_of_me.JPG" alt="Aruzhan Nugmanova painting">
+        <canvas class="hero-reveal-canvas" id="revealCanvas"></canvas>
       </div>
-      <div class="eyebrow">visual artist</div>
-      <h1>Aruzhan Nugmanova</h1>
-      <div class="star-divider">
-        <span class="line"></span>
-        <svg viewBox="0 0 20 20"><path d="M10 1 L12.4 7.6 L19.5 8 L13.8 12.2 L15.8 19 L10 15 L4.2 19 L6.2 12.2 L0.5 8 L7.6 7.6 Z"/></svg>
-        <span class="line"></span>
+
+      <div class="hero-content">
+        <div class="eyebrow">visual artist</div>
+        <h1>Aruzhan Nugmanova</h1>
+        <div class="star-divider">
+          <span class="line"></span>
+          <svg viewBox="0 0 20 20"><path d="M10 1 L12.4 7.6 L19.5 8 L13.8 12.2 L15.8 19 L10 15 L4.2 19 L6.2 12.2 L0.5 8 L7.6 7.6 Z"/></svg>
+          <span class="line"></span>
+        </div>
+        <p class="sub">a small archive of things I've made</p>
+        <p class="meta">painting · sculpture · architecture · 3d · ceramics · digital</p>
+        <p class="reveal-hint">move your cursor to reveal ✦</p>
       </div>
-      <p class="sub">a small archive of things I've made</p>
-      <p class="meta">painting · sculpture · architecture · 3d · ceramics · digital</p>
     </section>
 
     <section class="gallery-section" id="gallery">
@@ -140,7 +146,7 @@
         <h3>Permanent Installations</h3>
         <ul>
           <li>
-            <span class="desc"><span class="highlight">Claire Skinner Memorial Competition Winner</span> · symbolic sculpture created in collaboration with Brandon Zhang, selected for permanent installation on the Interlochen Center for the Arts campus. Unveiling reception to come.</span>
+            <span class="desc"><span class="highlight">Claire Skinner Memorial Competition Winner</span> · symbolic sculpture created in collaboration with Bradom Zhang, selected for permanent installation on the Interlochen Center for the Arts campus. Unveiling reception to come.</span>
             <span class="yr">2026</span>
           </li>
         </ul>
@@ -190,7 +196,7 @@
         </ul>
       </div>
 
-      <div class="cv-block">
+      <div class="cv-block cv-block-wide">
         <h3>Press &amp; Media</h3>
         <div class="video-box">
           <div class="video-label">
@@ -198,9 +204,9 @@
             <span class="video-sub">on receiving the American Visions Nomination · 2026</span>
           </div>
           <video controls playsinline preload="metadata" class="cv-video">
-            <source src="videos/scholastic-speech.mov" type="video/quicktime">
             <source src="videos/scholastic-speech.mp4" type="video/mp4">
-            Your browser doesn't support this video format. You can
+            <source src="videos/scholastic-speech.mov" type="video/quicktime">
+            Your browser can't play this video. You can
             <a href="videos/scholastic-speech.mov">download it here</a>.
           </video>
         </div>

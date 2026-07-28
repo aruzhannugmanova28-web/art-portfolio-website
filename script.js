@@ -47,7 +47,7 @@ const works = [
   {
     title:    "Light the Way Ahead",
     year:     "2026",
-    medium:   "Sculpture, collaboration with Brandon Zhang",
+    medium:   "Sculpture, collaboration with Bradom Zhang",
     category: "sculpture",
     badge:    "Claire Skinner Memorial Winner · Permanent Installation at Interlochen",
     gold:     true,
@@ -112,10 +112,11 @@ const works = [
     ]
   },
   {
-    title:    "Cups and Mugs",
+    title:    "Cups and Mugs · Constellations",
     year:     "2025",
     medium:   "Pottery, ceramics",
     category: "sculpture",
+    badge:    "Silver Key, Scholastic (Ceramics & Glass)",
     images:   [
       "images/cups and mugs/cups and mugs_2.jpg",
       "images/cups and mugs/cups and mugs_8.jpg",
@@ -133,14 +134,6 @@ const works = [
       "images/architecture stuff/Khan Shatyr's Model.JPG"
     ]
   },
-  {
-    title:    "Constellations",
-    year:     "2025",
-    medium:   "Ceramics",
-    category: "sculpture",
-    badge:    "Silver Key, Scholastic (Ceramics & Glass)",
-    images:   []
-  },
 
   // ==========  ARCHITECTURE  ==========
   {
@@ -149,9 +142,9 @@ const works = [
     medium:   "Architectural project",
     category: "architecture",
     images:   [
-      "images/branch commons/branch commons_1.jpg",
-      "images/branch commons/branch commons_2.jpg",
-      "images/branch commons/branch commons_3.jpg"
+      "images/branch commons/branch commons_1.jpeg",
+      "images/branch commons/branch commons_2.jpeg",
+      "images/branch commons/branch commons_3.jpeg"
     ]
   },
   {
@@ -225,14 +218,14 @@ const works = [
     year:     "2025",
     medium:   "Acrylic on canvas",
     category: "painting",
-    images:   ["images/paintings_1 imageners/interlochen_landscape_1.jpg"]
+    images:   ["images/paintings_1 imageners/interlochen_landscape_1.jpeg"]
   },
   {
     title:    "Still Life",
     year:     "2025",
     medium:   "Acrylic on canvas",
     category: "painting",
-    images:   ["images/paintings_1 imageners/still_life.jpg"]
+    images:   ["images/paintings_1 imageners/still_life.jpeg"]
   },
   {
     title:    "Observational Drawings",
@@ -240,8 +233,7 @@ const works = [
     medium:   "Graphite on paper",
     category: "painting",
     images:   [
-      "images/paintings_1 imageners/observational drawing_1.jpg",
-      "images/paintings_1 imageners/observational drawing_2.jpg"
+      "images/paintings_1 imageners/observational_drawing_1.png"
     ]
   },
   {
@@ -271,9 +263,9 @@ const works = [
     category: "painting",
     badge:    "Honorable Mention, Scholastic (Mixed Media)",
     images:   [
-      "images/korpe/korpe_1.jpg",
-      "images/korpe/korpe_2.jpg",
-      "images/korpe/korpe_3.jpg"
+      "images/korpe/korpe_1.jpeg",
+      "images/korpe/korpe_2.jpeg",
+      "images/korpe/korpe_3.jpeg"
     ]
   },
   {
@@ -313,17 +305,9 @@ const works = [
   {
     title:    "Net",
     year:     "2025",
-    medium:   "Photography",
-    category: "3d",
+    medium:   "Sculpture",
+    category: "sculpture",
     images:   ["images/net/net_1.JPG"]
-  },
-  {
-    title:    "Follow Your Dreams",
-    year:     "2024",
-    medium:   "Digital art",
-    category: "3d",
-    badge:    "Silver Key, Scholastic (Digital Art)",
-    images:   []
   },
 
   // ==========  DESIGN  ==========
@@ -332,7 +316,7 @@ const works = [
     year:     "2026",
     medium:   "Merch design for the Tang Club, Milton Academy",
     category: "design",
-    images:   ["images/merch_photos/merch_1.jpg"]
+    images:   ["images/merch_photos.png"]
   },
   {
     title:    "Signature",
@@ -382,6 +366,74 @@ function endIntro() {
   document.body.classList.remove('intro-active');
   document.getElementById('intro').classList.add('gone');
   document.getElementById('main').classList.add('show');
+  // Kick off the brush-reveal init after main becomes visible
+  setTimeout(initBrushReveal, 100);
+}
+
+
+/* =====  BRUSH-REVEAL PORTRAIT  =====
+   The hero photo sits behind a canvas painted with a cream-colored overlay.
+   As the user moves their cursor across the canvas, we "erase" the overlay
+   with a soft brush, revealing the photo underneath — like clearing steam
+   from a window with your hand. */
+function initBrushReveal() {
+  const canvas = document.getElementById('revealCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width, height;
+
+  // The cream overlay color must match the hero background so the
+  // uncovered canvas is invisible against the page.
+  const OVERLAY_COLOR = 'rgba(251, 243, 228, 0.90)';   // semi-transparent cream
+  const BRUSH_SIZE    = 90;                            // radius of the brush
+  const BRUSH_SOFT    = 40;                            // extra soft edge
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    width = canvas.width = rect.width * window.devicePixelRatio;
+    height = canvas.height = rect.height * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    paintOverlay();
+  }
+
+  function paintOverlay() {
+    // Fill the canvas with the cream overlay (this hides the photo)
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = OVERLAY_COLOR;
+    ctx.fillRect(0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio);
+  }
+
+  function erase(x, y) {
+    // 'destination-out' punches a hole in the canvas at (x, y)
+    ctx.globalCompositeOperation = 'destination-out';
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, BRUSH_SIZE + BRUSH_SOFT);
+    gradient.addColorStop(0, 'rgba(0,0,0,1)');
+    gradient.addColorStop(BRUSH_SIZE / (BRUSH_SIZE + BRUSH_SOFT), 'rgba(0,0,0,0.7)');
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, BRUSH_SIZE + BRUSH_SOFT, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function handleMove(e) {
+    const rect = canvas.getBoundingClientRect();
+    let x, y;
+    if (e.touches && e.touches.length > 0) {
+      x = e.touches[0].clientX - rect.left;
+      y = e.touches[0].clientY - rect.top;
+    } else {
+      x = e.clientX - rect.left;
+      y = e.clientY - rect.top;
+    }
+    erase(x, y);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  canvas.addEventListener('mousemove', handleMove);
+  canvas.addEventListener('touchmove', handleMove, { passive: true });
 }
 
 

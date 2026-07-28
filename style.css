@@ -320,38 +320,55 @@ nav.top a::after {
 nav.top a:hover::after { transform: scaleX(1); }
 
 
-/* HERO with portrait */
+/* HERO with full-screen brush-reveal portrait */
 .hero {
-  padding: 5rem 3rem 4rem;
+  padding: 0;
   text-align: center;
   position: relative;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.hero-portrait {
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 2.5rem;
-  border-radius: 50%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  border: 1px solid var(--gold-deep);
-  box-shadow: 0 6px 20px rgba(212, 168, 90, 0.12);
-  position: relative;
+  max-width: none;
+  margin: 0;
 }
-.hero-portrait::after {
-  content: '';
+
+/* The portrait sits behind everything, covered by a canvas overlay
+   that the user "paints" away to reveal the image */
+.hero-reveal-wrap {
   position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1px solid var(--gold);
-  opacity: 0.15;
+  inset: 0;
+  z-index: 1;
   pointer-events: none;
 }
-.hero-portrait img {
+.hero-reveal-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  filter: sepia(0.15) saturate(0.85);
+  opacity: 1;
+}
+.hero-reveal-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+/* Hero text sits on top, semi-transparent so photo shows through */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 5rem 3rem;
+  max-width: 1200px;
+  pointer-events: none;
+  /* subtle backdrop so text stays readable over the photo */
+  text-shadow: 0 2px 12px rgba(251, 243, 228, 0.6);
 }
 .hero .eyebrow {
   font-family: 'Fraunces', serif;
@@ -389,6 +406,19 @@ nav.top a:hover::after { transform: scaleX(1); }
 .hero .star-divider svg { width: 18px; height: 18px; fill: var(--gold-deep); }
 .hero .sub { font-family: 'Caveat', cursive; font-size: 1.5rem; color: var(--ink-soft); margin-bottom: 0.8rem; }
 .hero .meta { font-size: 0.82rem; color: var(--ink-muted); letter-spacing: 0.22em; text-transform: uppercase; }
+.hero .reveal-hint {
+  margin-top: 2rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  color: var(--gold-dark);
+  opacity: 0.7;
+  letter-spacing: 0.03em;
+  animation: hint-pulse 2.5s ease-in-out infinite;
+}
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
 
 
 /* GALLERY */
@@ -485,6 +515,7 @@ nav.top a:hover::after { transform: scaleX(1); }
   margin: 0 auto;
   border-top: 1px solid var(--line);
 }
+#cv { max-width: 1100px; }
 .section h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: 2rem; margin-bottom: 2rem; }
 .section p { margin-bottom: 1.2rem; font-size: 1.05rem; }
 .section .lead { font-size: 1.2rem; font-style: italic; color: var(--ink-soft); }
@@ -713,11 +744,21 @@ footer .star { display: inline-block; margin: 0 0.6rem; color: var(--gold-deep);
 /* ============================================
    CV VIDEO BOX (Press & Media)
    ============================================ */
+
+/* Wide CV block breaks out of the normal 900px section width */
+.cv-block-wide {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2.5rem;
+}
+
 .video-box {
   background: linear-gradient(135deg, var(--cream-deep), var(--cream-warm));
   border: 1px solid var(--line);
   border-radius: 6px;
-  padding: 1.5rem;
+  padding: 2rem;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 .video-box:hover {
@@ -727,27 +768,30 @@ footer .star { display: inline-block; margin: 0 0.6rem; color: var(--gold-deep);
 .video-label {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  margin-bottom: 1rem;
+  gap: 0.2rem;
+  margin-bottom: 1.5rem;
 }
 .video-title {
   font-family: 'Fraunces', serif;
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   color: var(--ink);
 }
 .video-sub {
   font-family: 'EB Garamond', serif;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--ink-muted);
   letter-spacing: 0.03em;
 }
 .cv-video {
   width: 100%;
-  max-height: 500px;
+  min-height: 400px;
+  max-height: 720px;
   display: block;
   border-radius: 4px;
   background: var(--ink);
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
 }
 
 
@@ -783,10 +827,12 @@ footer .star { display: inline-block; margin: 0 0.6rem; color: var(--gold-deep);
   nav.top { padding: 1rem 1.5rem; }
   nav.top ul { gap: 1.2rem; font-size: 0.85rem; }
   nav.top .mark { font-size: 1.6rem; }
-  .hero, .gallery-section, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .hero-portrait { width: 130px; height: 130px; margin-bottom: 2rem; }
+  .hero { min-height: 70vh; }
+  .hero-content { padding: 3rem 1.5rem; }
+  .gallery-section, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1.5rem; }
   .cv-block li { flex-direction: column; gap: 0.2rem; }
+  .cv-video { min-height: 200px; }
   .lb-nav { width: 2.5rem; height: 2.5rem; font-size: 1.4rem; }
   .lb-prev { left: 0.8rem; }
   .lb-next { right: 0.8rem; }
@@ -795,4 +841,10 @@ footer .star { display: inline-block; margin: 0 0.6rem; color: var(--gold-deep);
   .lb-info h3 { font-size: 1.3rem; }
   .lb-image-wrap { min-width: unset; min-height: 200px; }
   .lb-placeholder { min-width: unset; min-height: 300px; padding: 2rem 1.5rem; font-size: 1.4rem; }
+}
+
+/* On touch devices, disable the canvas (no hover cursor) and just show the photo faded */
+@media (hover: none) {
+  .hero-reveal-canvas { display: none; }
+  .hero-reveal-img { opacity: 0.35; }
 }
