@@ -322,10 +322,10 @@ nav.top a:hover::after { transform: scaleX(1); }
 
 /* HERO with full-screen brush-reveal portrait */
 .hero {
-  padding: 3rem 2rem;
+  padding: 0;
   text-align: center;
   position: relative;
-  min-height: 60vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -333,20 +333,14 @@ nav.top a:hover::after { transform: scaleX(1); }
   max-width: none;
   margin: 0;
 }
-
+ 
 /* The portrait sits behind everything, covered by a canvas overlay
    that the user "paints" away to reveal the image */
 .hero-reveal-wrap {
   position: absolute;
-  top: 2rem;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(1400px, 68vw);
+  inset: 0;
   z-index: 1;
   pointer-events: none;
-  border-radius: 8px;
-  overflow: hidden;
 }
 .hero-reveal-img {
   position: absolute;
