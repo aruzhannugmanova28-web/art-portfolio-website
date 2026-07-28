@@ -167,8 +167,8 @@ const works = [
   {
     title:    "Tree House",
     year:     "2024",
-    medium:   "Architectural model",
-    category: "architecture",
+    medium:   "3D model in Blender",
+    category: "3d",
     badge:    "Honorable Mention, Scholastic (Architecture & Industrial Design)",
     images:   [
       "images/tree house/tree house_1.png",
@@ -293,8 +293,8 @@ const works = [
   {
     title:    "Public Art Project",
     year:     "2025",
-    medium:   "3D model in Blender",
-    category: "3d",
+    medium:   "Sculpture",
+    category: "sculpture",
     images:   [
       "images/public art project/3D Model.png",
       "images/public art project/3D Model 2.png",
@@ -373,39 +373,41 @@ function endIntro() {
 
 /* =====  BRUSH-REVEAL PORTRAIT  =====
    The hero photo sits behind a canvas painted with a cream-colored overlay.
-   As the user moves their cursor across the canvas, we "erase" the overlay
-   with a soft brush, revealing the photo underneath — like clearing steam
-   from a window with your hand. */
+   As the user moves their cursor (or finger) across the canvas, we "erase"
+   the overlay with a soft brush, revealing the photo underneath — like
+   clearing steam from a window with your hand. */
 function initBrushReveal() {
   const canvas = document.getElementById('revealCanvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
-  let width, height;
+  const isTouch = window.matchMedia('(hover: none)').matches;
 
   // The cream overlay color must match the hero background so the
   // uncovered canvas is invisible against the page.
-  const OVERLAY_COLOR = 'rgba(251, 243, 228, 0.90)';   // semi-transparent cream
-  const BRUSH_SIZE    = 90;                            // radius of the brush
-  const BRUSH_SOFT    = 40;                            // extra soft edge
+  const OVERLAY_COLOR = 'rgba(251, 243, 228, 0.90)';
+  // Smaller brush on touch since fingers are less precise but need
+  // to reveal more per drag.
+  const BRUSH_SIZE = isTouch ? 60 : 90;
+  const BRUSH_SOFT = isTouch ? 30 : 40;
 
   function resize() {
+    // Reset any prior scaling by re-getting a fresh context
     const rect = canvas.getBoundingClientRect();
-    width = canvas.width = rect.width * window.devicePixelRatio;
-    height = canvas.height = rect.height * window.devicePixelRatio;
+    canvas.width  = rect.width  * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    paintOverlay();
+    paintOverlay(rect.width, rect.height);
   }
 
-  function paintOverlay() {
-    // Fill the canvas with the cream overlay (this hides the photo)
+  function paintOverlay(w, h) {
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillStyle = OVERLAY_COLOR;
-    ctx.fillRect(0, 0, canvas.width / window.devicePixelRatio, canvas.height / window.devicePixelRatio);
+    ctx.fillRect(0, 0, w, h);
   }
 
   function erase(x, y) {
-    // 'destination-out' punches a hole in the canvas at (x, y)
     ctx.globalCompositeOperation = 'destination-out';
     const gradient = ctx.createRadialGradient(x, y, 0, x, y, BRUSH_SIZE + BRUSH_SOFT);
     gradient.addColorStop(0, 'rgba(0,0,0,1)');
@@ -417,23 +419,38 @@ function initBrushReveal() {
     ctx.fill();
   }
 
-  function handleMove(e) {
+  function pointFromEvent(e) {
     const rect = canvas.getBoundingClientRect();
-    let x, y;
-    if (e.touches && e.touches.length > 0) {
-      x = e.touches[0].clientX - rect.left;
-      y = e.touches[0].clientY - rect.top;
-    } else {
-      x = e.clientX - rect.left;
-      y = e.clientY - rect.top;
+    const t = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]);
+    if (t) {
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
     }
-    erase(x, y);
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
+
+  // Mouse events — desktop
+  canvas.addEventListener('mousemove', e => {
+    const p = pointFromEvent(e);
+    erase(p.x, p.y);
+  });
+
+  // Touch events — mobile
+  // touchstart erases immediately on tap so users see something happen
+  // touchmove erases as they drag (preventDefault stops page scroll)
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const p = pointFromEvent(e);
+    erase(p.x, p.y);
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const p = pointFromEvent(e);
+    erase(p.x, p.y);
+  }, { passive: false });
 
   resize();
   window.addEventListener('resize', resize);
-  canvas.addEventListener('mousemove', handleMove);
-  canvas.addEventListener('touchmove', handleMove, { passive: true });
 }
 
 

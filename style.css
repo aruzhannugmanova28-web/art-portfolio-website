@@ -322,10 +322,10 @@ nav.top a:hover::after { transform: scaleX(1); }
 
 /* HERO with full-screen brush-reveal portrait */
 .hero {
-  padding: 0;
+  padding: 4rem 2rem;
   text-align: center;
   position: relative;
-  min-height: 90vh;
+  min-height: 75vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -338,9 +338,15 @@ nav.top a:hover::after { transform: scaleX(1); }
    that the user "paints" away to reveal the image */
 .hero-reveal-wrap {
   position: absolute;
-  inset: 0;
+  top: 4rem;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80vw);
   z-index: 1;
   pointer-events: none;
+  border-radius: 8px;
+  overflow: hidden;
 }
 .hero-reveal-img {
   position: absolute;
@@ -364,11 +370,10 @@ nav.top a:hover::after { transform: scaleX(1); }
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 5rem 3rem;
+  padding: 3rem 3rem;
   max-width: 1200px;
   pointer-events: none;
-  /* subtle backdrop so text stays readable over the photo */
-  text-shadow: 0 2px 12px rgba(251, 243, 228, 0.6);
+  text-shadow: 0 2px 12px rgba(251, 243, 228, 0.85), 0 0 20px rgba(251, 243, 228, 0.6);
 }
 .hero .eyebrow {
   font-family: 'Fraunces', serif;
@@ -843,8 +848,9 @@ footer .star { display: inline-block; margin: 0 0.6rem; color: var(--gold-deep);
   .lb-placeholder { min-width: unset; min-height: 300px; padding: 2rem 1.5rem; font-size: 1.4rem; }
 }
 
-/* On touch devices, disable the canvas (no hover cursor) and just show the photo faded */
+/* On touch devices, use a smaller brush and softer overlay so the reveal
+   works nicely with a finger tap-and-drag. The JS reads these settings
+   at init time from data attributes on the canvas. */
 @media (hover: none) {
-  .hero-reveal-canvas { display: none; }
-  .hero-reveal-img { opacity: 0.35; }
+  .hero-reveal-canvas { cursor: pointer; }
 }
